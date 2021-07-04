@@ -1,0 +1,56 @@
+﻿@model IEnumerable<MeetingsApp.Data.Entities.MeetingItem>
+
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "Index";
+}
+
+<h1>Meetings List</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+          
+            <th>
+                @Html.DisplayNameFor(model => model.Comment)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Staff)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Meeting)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ItemStatus)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+           
+            <td>
+                @Html.DisplayFor(modelItem => item.Comment)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Staff.StaffId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Meeting.MeetingId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ItemStatus.ItemStatusId)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.MeetingItemId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.MeetingItemId">Details</a> |
+           
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

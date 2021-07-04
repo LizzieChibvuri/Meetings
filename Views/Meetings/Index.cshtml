@@ -1,0 +1,47 @@
+﻿@model IEnumerable<MeetingsApp.Data.Entities.Meeting>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h4>Meetings List</h4>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.MeetingType)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MeetingDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MeetingTime)
+            </th>
+
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.MeetingType.TypeName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MeetingDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MeetingTime))
+            </td>
+
+            <td>
+                <a asp-action="Details" asp-route-id="@item.MeetingId">View Details</a> 
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

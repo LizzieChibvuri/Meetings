@@ -1,0 +1,76 @@
+﻿@model MeetingsApp.Models.MeetingDetailViewModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h4>Meeting Details</h4>
+
+<div>
+    
+    <hr />
+    <dl class="row">
+
+        <dd class="col-sm-10">
+            <u> @Html.DisplayFor(model => model.MeetingName)</u>
+          
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-controller="MeetingItems" asp-action="Create" asp-route-id="@Model.MeetingId">Create New |</a>
+    <a asp-action="Index">Back to List</a>
+</div>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayName("Meeting Item")
+            </th>
+
+            <th>
+                @Html.DisplayName("Comments")
+            </th>
+           
+            <th>
+                @Html.DisplayName("Status")
+            </th>
+            <th>
+                @Html.DisplayName("Action By:")
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.Items != null)
+        {
+            @foreach (var item in Model.Items)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ItemDescription)
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Comment)
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.StatusName)
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ActionBy)
+                    </td>
+
+                    <td>
+                        <a asp-controller="MeetingItems" asp-action="Edit" asp-route-id="@item.MeetingItemId">Edit</a> 
+
+                    </td>
+                </tr>
+            }
+
+        }
+
+    </tbody>
+</table>

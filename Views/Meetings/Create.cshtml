@@ -1,0 +1,94 @@
+﻿@model MeetingsApp.Models.MeetingViewModel
+
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "Create";
+}
+
+<h4>Create Meeting</h4>
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="MeetingTypeId" class="control-label"></label>
+                <select asp-for="MeetingTypeId" class="form-control" asp-items="ViewBag.MeetingTypeId"></select>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="oldItemIDs" class="control-label">Previous Meeting Items</label>
+                <select asp-for="oldItemIDs" id="oldItemIDs" name="oldItemIDs" multiple class="form-control" asp-items="@(new SelectList(string.Empty,"MeetingItemId","ItemDescription"))"></select>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="MeetingDate" class="control-label"></label>
+                <input asp-for="MeetingDate" class="form-control" />
+                <span asp-validation-for="MeetingDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MeetingTime" class="control-label"></label>
+                <input asp-for="MeetingTime" class="form-control" type="time" />
+                <span asp-validation-for="MeetingTime" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6/jquery.min.js" type="text/javascript"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js" type="text/javascript"></script>
+<link href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="Stylesheet" type="text/css" />
+<script>
+    $('#MeetingTime').datepicker({
+        dateFormat: '',
+        timeFormat: 'hh:mm tt'
+    });
+
+    $(document).ready(function () {
+        var items = "<option value='0'>Select</option>";
+        $("#oldItemIDs").html(items);
+    })
+
+    $(document).ready(function () {
+        $("#MeetingTypeId").on("change", function () {
+
+            var mid = $("#MeetingTypeId").val();
+            console.log('inside ajax:' + mid);
+
+            $.ajax({
+                url: '@Url.Action("GetLastMinutesByTypeId", "Meetings")',
+                type: "GET",
+                data: { id:mid },
+                traditional: true,
+                success: function (result) {
+                    console.log('back from server' + result)
+                    var items = '';
+                    $("#oldItemIDs").empty();
+                    if(result!=null)
+                    $.each(result, function (i, item) {
+                       items+='<option value="'+ item.value +'"> '+ item.text +' </option>';
+                    });
+
+                    $("#oldItemIDs").html(items);
+                },
+                error: function () {
+                    alert("Something went wrong");
+                }
+            });
+        });
+    });
+
+</script>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
